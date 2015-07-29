@@ -40,6 +40,9 @@ sequelize.sync();
 			Quiz.create({   pregunta : 'capital de Italia',
 							respuesta : 'Roma'
 						})
+			Quiz.create({   pregunta : 'capital de argentina',
+							respuesta : 'Buenos Aires'
+						})
 			.then(function(){console.log('Base de datos inicializada')});
 		};
 	});
