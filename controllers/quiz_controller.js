@@ -10,7 +10,7 @@ exports.question = function(req, res) {
 // GET /quizes/answer
 exports.answer = function(req, res){
 	models.Quiz.findAll().then(function(quiz) {
-		
+
 		if(req.query.respuesta == quiz[0].respuesta){
 			res.render('quizes/answer', {respuesta: 'Correcto'});
 		}else{
@@ -58,12 +58,12 @@ exports.show = function(req, res) {
 // GET /quizes/:id/answer
 exports.answer = function(req, res) {
 	models.Quiz.findById(req.params.quizId).then(function(quiz) {
-		if (req.query.respuesta === quiz.respuesta) {
+		if (req.query.respuesta === req.quiz.respuesta) {
 			res.render('quizes/answer',
-						{ quiz: quiz, respuesta : 'Correcto', errors:[] });
+						{ quiz: req.quiz, respuesta : 'Correcto', errors:[] });
 		} else {
 			res.render('quizes/answer',
-						{ quiz:quiz, respuesta: 'Incorrecto', errors:[] });
+						{ quiz: req.quiz, respuesta: 'Incorrecto', errors:[] });
 		}
 		})
 	}
@@ -71,7 +71,23 @@ exports.answer = function(req, res) {
 
 // GET /quizes
 exports.index = function(req,res) {
-	models.Quiz.findAll().then(function(quizes) {
-		res.render('quizes/index.ejs', {quizes:quizes, errors: [] });
-	})
+	models.Quiz.findAll().then(
+			function(quizes) {
+				res.render('quizes/index.ejs', { quizes:quizes, errors: [] });
+			}
+	).catch(function(error) { next(error); })
 }
+
+// Autoload - factoriza el codigo si ruta incluye : quizId
+exports.load = function(req, res, next, quizId){
+		models.Quiz.findById(quizId).then(
+			function(quiz) {
+				if (quiz) {
+					req.quiz = quiz;
+					next();
+				} else {
+					next(new Error('No existe quizId='+ quizId));
+				}
+			}
+		).catch(function(error) { next(error); });
+};
