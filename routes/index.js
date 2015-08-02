@@ -19,5 +19,6 @@ router.post('/quizes/create',  				quizController.create)
 router.get('/quizes',          				quizController.index)
 router.get('/quizes/:quizId(\\d+)', 		quizController.show)
 router.get('/quizes/:quizId(\\d+)/answer', 	quizController.answer)
+router.delete('/quizes/:quizId(\\d+)',  quizController.destroy)
 
 module.exports = router;
