@@ -40,7 +40,7 @@ exports.create = function(req, res) {
 				res.render('quizes/new', {quiz:quiz, errors: err.errors})
 			}else{
 				// guarda en BD los campos pregunta y respuesta de quiz
-				quiz.save({fields: ["pregunta", "respuesta"]}).then(function(){
+				quiz.save({fields: ["pregunta", "respuesta","tipo"]}).then(function(){
 					res.redirect('/quizes');
 				})
 			}
