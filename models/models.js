@@ -10,7 +10,7 @@ var protocol 	= (url[1]||null);
 var dialect 	= (url[1]||null);
 var port 		= (url[5]||null);
 var host 		= (url[4]||null);
-var storage 	= process.env.DATABASE_STORAGE;	  
+var storage 	= process.env.DATABASE_STORAGE;
 
 //cargar modelo ORM
 var Sequelize = require('sequelize');
@@ -38,12 +38,13 @@ sequelize.sync();
 	Quiz.count().then(function (count) {
 		if (count === 0) { // la tabla se inicializa solo si esta vacia
 			Quiz.create({   pregunta : 'capital de Italia',
-							respuesta : 'Roma'
+							respuesta : 'Roma',
+							tipo : "otro"
 						})
 			Quiz.create({   pregunta : 'capital de argentina',
-							respuesta : 'Buenos Aires'
+							respuesta : 'Buenos Aires',
+							tipo : "otro"
 						})
 			.then(function(){console.log('Base de datos inicializada')});
 		};
 	});
-
