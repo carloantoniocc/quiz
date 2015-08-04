@@ -71,11 +71,21 @@ exports.answer = function(req, res) {
 
 // GET /quizes
 exports.index = function(req,res,next) {
-	models.Quiz.findAll().then(
-			function(quizes) {
-				res.render('quizes/index.ejs', { quizes:quizes, errors: [] });
-			}
-	).catch(function(error) { next(error); })
+	var busqueda = req.query.texto_busqueda
+	console.log('valor de busqueda : ' + busqueda)
+	if (busqueda === undefined) {
+		models.Quiz.findAll().then(
+				function(quizes) {
+					res.render('quizes/index.ejs', { quizes:quizes, errors: [] });
+				}
+		).catch(function(error) { next(error); })
+	} else {
+			models.Quiz.findAll( {where: ["pregunta like ?", "%" + busqueda.replace(" ", "%") + "%"], order: ["pregunta"] } ).then(
+					function(quizes) {
+						res.render('quizes/index.ejs', { quizes:quizes, errors: [] });
+					}
+			).catch(function(error) { next(error); })
+	}
 }
 
 // Autoload - factoriza el codigo si ruta incluye : quizId
@@ -122,4 +132,9 @@ exports.update = function(req, res) {
 			}
 		}
 	)
+}
+
+exports.autor = function(req, res) {
+		var quiz = req.quiz;
+		res.render('autor',{ quiz:quiz ,errors: [] });
 }
