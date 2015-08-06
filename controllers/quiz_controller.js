@@ -50,9 +50,7 @@ exports.create = function(req, res) {
 
 //GET /quizes/:id
 exports.show = function(req, res) {
-	models.Quiz.findById(req.params.quizId).then(function(quiz) {
-		res.render('quizes/show', {quiz:quiz, errors: []} );
-	})
+			res.render('quizes/show', {quiz: req.quiz, errors: []} );
 }
 
 // GET /quizes/:id/answer
@@ -90,7 +88,7 @@ exports.index = function(req,res,next) {
 
 // Autoload - factoriza el codigo si ruta incluye : quizId
 exports.load = function(req, res, next, quizId){
-
+		console.log('autoload:___________________________________')
 		models.Quiz.find({
 							where: { id: Number(quizId)	},
 							include: [{	model:	models.Comment	}]
@@ -98,6 +96,7 @@ exports.load = function(req, res, next, quizId){
 			function(quiz) {
 				if (quiz) {
 					req.quiz = quiz;
+					console.log('fin autoload:___________________________________')
 					next();
 				} else {
 					next(new Error('No existe quizId='+ quizId));
