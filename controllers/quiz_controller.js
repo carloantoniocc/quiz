@@ -70,7 +70,6 @@ exports.answer = function(req, res) {
 // GET /quizes
 exports.index = function(req,res,next) {
 	var busqueda = req.query.texto_busqueda
-	console.log('valor de busqueda : ' + busqueda)
 	if (busqueda === undefined) {
 		models.Quiz.findAll().then(
 				function(quizes) {
@@ -88,7 +87,6 @@ exports.index = function(req,res,next) {
 
 // Autoload - factoriza el codigo si ruta incluye : quizId
 exports.load = function(req, res, next, quizId){
-		console.log('autoload:___________________________________')
 		models.Quiz.find({
 							where: { id: Number(quizId)	},
 							include: [{	model:	models.Comment	}]
@@ -96,7 +94,6 @@ exports.load = function(req, res, next, quizId){
 			function(quiz) {
 				if (quiz) {
 					req.quiz = quiz;
-					console.log('fin autoload:___________________________________')
 					next();
 				} else {
 					next(new Error('No existe quizId='+ quizId));
