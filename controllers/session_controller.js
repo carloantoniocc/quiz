@@ -1,6 +1,9 @@
 var models = require('../models/models');
 
 exports.loginRequired = function(req,res, next){
+  //var tiempo = 120000;
+  //req.session.cookie.expires = new Date(Date.now() + tiempo);
+  //console.log('req.session.cookie.expires : ...........' + req.session.cookie.expires)
   if(req.session.user) {
     next();
   } else{
@@ -32,7 +35,7 @@ exports.create = function(req, res) {
 
       //crear req.session.user y guardar los campos id y username
       //la session se define por la existencia de: req.session.user
-      req.session.user = {id:user.id, username:user.username};
+      req.session.user = {id:user.id, username:user.username, lastRequestTime: Date.now() };
       res.redirect(req.session.redir.toString()); //redireccion a path anterior a login
     });
 };
